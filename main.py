@@ -25,5 +25,14 @@ async def post_data(item: Item):
     #df_temp = pd.DataFrame([{"sensor":item.sensor, "date":day, "time":hour, "value": item.value_measured_mem}])
     #df.append(df_temp, ignore_index = True)
     measurement_adc.append({"sensor":item.sensor, "date":day, "time":hour, "value": item.value_measured_mem})
-    return item
+    #return item
+
+@app.get("/aclr")   #acelerometro
+async def root():
+    return measurement_adc
+
+@app.get("/temperature")   #temperature
+async def root():
+    return measurement_adc
+
 
