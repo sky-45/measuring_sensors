@@ -85,12 +85,3 @@ async def post_data(item: Item):
     hour = now.strftime("%H:%M:%S")
     measurement_adc_3.append({"owner":item.owner, "sensor":item.sensor, "datetime":day+' '+hour, "value": item.value_measured_mem})
     #return item
-
-
-
-@app.get("/temperature/{last_num}")   #temperature
-async def fig_temp(last_num:int):
-    pth_img=get_plt_sensor("ADC", last_num, measurement_adc)
-    return FileResponse(pth_img)
-
-
