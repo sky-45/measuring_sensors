@@ -88,3 +88,12 @@ async def post_data(item: Item):
     hour = now.strftime("%H:%M:%S")
     measurement_adc_3.append({"owner":item.owner, "sensor":item.sensor, "datetime":day+' '+hour, "value": int(item.value_measured_mem)})
     return item
+
+@app.get("/post_data_test/{owner}/{sensor}/{value}")
+async def post_data(owner: str, sensor: str, value: str):
+    now = datetime.now()
+    day = now.strftime("%d/%m/%Y")
+    hour = now.strftime("%H:%M:%S")
+    dict_temp = {"owner":owner, "sensor":sensor, "datetime":day+' '+hour, "value": int(value)}
+    measurement_adc_3.append(dict_temp)
+    return dict_temp
