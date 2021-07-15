@@ -74,8 +74,11 @@ async def root():
 
 @app.get("/wifi_test")
 async def wifi_test():
-    return measurement_adc_3
+    return random.randint(1, 8)
 
+@app.get("/wifi_test2")
+async def wifi_test2():
+    return {"datetime":measurement_adc_2[-1]["datetime"], "value":measurement_adc_2[-1]["value"]}
 
 
 @app.post("/post_data")
