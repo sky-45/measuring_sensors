@@ -61,7 +61,7 @@ async def root():
 @app.get("/test_react")
 async def root():
     #return df.to_dict("index")
-    return measurement_adc_2
+    return measurement_adc_3
 
 @app.get("/rand_continue")
 async def root():
