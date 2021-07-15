@@ -36,7 +36,7 @@ measurement_adc_3 = [{"owner":"johan", "datetime":"14/07/2021 11:15:10", "value"
 class Item(BaseModel):
     owner: str
     sensor: str
-    value_measured_mem: int
+    value_measured_mem: str
 
 app = FastAPI()
 
@@ -86,5 +86,5 @@ async def post_data(item: Item):
     now = datetime.now()
     day = now.strftime("%d/%m/%Y")
     hour = now.strftime("%H:%M:%S")
-    measurement_adc_3.append({"owner":item.owner, "sensor":item.sensor, "datetime":day+' '+hour, "value": item.value_measured_mem})
-    #return item
+    measurement_adc_3.append({"owner":item.owner, "sensor":item.sensor, "datetime":day+' '+hour, "value": int(item.value_measured_mem)})
+    return item
