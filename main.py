@@ -80,6 +80,14 @@ async def wifi_test():
 async def wifi_test2():
     return {"datetime":measurement_adc_2[-1]["datetime"], "value":measurement_adc_2[-1]["value"]}
 
+@app.get("/wifi_test3")
+async def wifi_test3():
+    now = datetime.now()
+    day = now.strftime("%d/%m/%Y")
+    hour = now.strftime("%H:%M:%S")
+    
+    return {"datetime":day+' '+hour, "value":measurement_adc_3[-1]["value"]}
+
 
 @app.post("/post_data")
 async def post_data(item: Item):
