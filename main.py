@@ -4,34 +4,38 @@ from datetime import datetime
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
 import random
+import numpy as np
 
 from fastapi.middleware.cors import CORSMiddleware
-
-
-measurement_adc = [{"sensor":"ADC", "datetime":"14/07/2021 11:15:10", "value": 5},
-                  {"sensor":"ADC", "datetime":"14/07/2021 11:17:10", "value": 2},
-                  {"sensor":"ADC", "datetime":"14/07/2021 11:19:10", "value": 4},
-                  {"sensor":"ADC", "datetime":"14/07/2021 11:20:10", "value": 6},
-                  {"sensor":"ADC", "datetime":"14/07/2021 11:21:10", "value": 4},
-                  {"sensor":"ADC", "datetime":"14/07/2021 11:22:10", "value": 7}
-                  ]
-measurement_adc_2 = [{"datetime":"14/07/2021 11:15:10", "value": 5},
-                  {"datetime":"14/07/2021 11:17:10", "value": 2},
-                  {"datetime":"14/07/2021 11:19:10", "value": 4},
-                  {"datetime":"14/07/2021 11:20:10", "value": 6},
-                  {"datetime":"14/07/2021 11:21:10", "value": 4},
-                  {"datetime":"14/07/2021 11:22:10", "value": 7}
-                  ]       
-measurement_adc_3 = [{"owner":"johan", "datetime":"14/07/2021 11:15:10", "value": 5},
-                  {"owner":"johan", "datetime":"14/07/2021 11:17:10", "value": 2},
-                  {"owner":"johan", "datetime":"14/07/2021 11:19:10", "value": 4},
-                  {"owner":"johan", "datetime":"14/07/2021 11:22:10", "value": 7}
+    
+measurement_adc = [{"owner":"Johan", "datetime":"14/07/2021 11:15:10", "value": 3},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:17:10", "value": 2},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:19:10", "value": 1},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:20:10", "value": 2},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:21:10", "value": 2},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:21:13", "value": 1},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:22:14", "value": 4},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:22:15", "value": 2},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:23:01", "value": 0},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:23:10", "value": 2},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:24:10", "value": 4},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:24:11", "value": 4},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:25:10", "value": 1}
+                  
                   ]
 
-#for k in range(1,600):
-#    temp = {"sensor":"ADC", "datetime":"14/07/2021 11:{}:{}".format(k%50, random.randint(2, 55)), "value": 5+random.random()}
-#    measurement_adc.append(temp)
-
+measurement_acel = [{"owner":"Johan", "datetime":"14/07/2021 11:15:10", "valueX": 100, "valueY": 200, "valueZ": 140},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:17:10", "valueX": 120, "valueY": 210, "valueZ": 160},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:19:10", "valueX": 140, "valueY": 120, "valueZ": 109},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:22:10", "valueX": 150, "valueY": 169, "valueZ": 42},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:22:14", "valueX": 160, "valueY": 120, "valueZ": 122},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:22:15", "valueX": 110, "valueY": 160, "valueZ": 42},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:23:01", "valueX": 100, "valueY": 124, "valueZ": 142},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:23:10", "valueX": 160, "valueY": 50, "valueZ": 202},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:24:10", "valueX": 220, "valueY": 60, "valueZ": 180},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:24:11", "valueX": 40, "valueY": 100, "valueZ": 150},
+                  {"owner":"Johan", "datetime":"14/07/2021 11:25:10", "valueX": 100, "valueY": 120, "valueZ": 145}
+                  ]
 
 class Item(BaseModel):
     owner: str
@@ -61,47 +65,60 @@ async def root():
 @app.get("/test_react")
 async def root():
     #return df.to_dict("index")
-    return measurement_adc_3
+    return measurement_adc
 
-@app.get("/rand_continue")
+@app.get("/rand_continue_adc")
 async def root():
     now = datetime.now()
-    day = now.strftime("%d/%m/%Y")
-    hour = now.strftime("%H:%M:%S")
-    date_time = day+' '+hour
-    return [date_time, random.randint(1, 8)]
-    #return [measurement_adc_2[-1]["datetime"], measurement_adc_2[-1]["value"]]
+    return {"datetime":now, "value":random.randint(1, 4)}
 
-@app.get("/wifi_test")
-async def wifi_test():
-    return random.randint(1, 8)
-
-@app.get("/wifi_test2")
-async def wifi_test2():
-    return {"datetime":measurement_adc_2[-1]["datetime"], "value":measurement_adc_2[-1]["value"]}
-
-@app.get("/wifi_test3")
-async def wifi_test3():
+@app.get("/rand_continue_acel")
+async def root():
     now = datetime.now()
-    day = now.strftime("%d/%m/%Y")
-    hour = now.strftime("%H:%M:%S")
-    
-    return {"datetime":day+' '+hour, "value":measurement_adc_3[-1]["value"]}
+    return {"datetime":now, "valueX":random.randint(1, 255),"valueY":random.randint(1, 255),"valueZ":random.randint(1, 255)}
 
-
-@app.post("/post_data")
-async def post_data(item: Item):
+@app.get("/last_adc")
+async def root():
     now = datetime.now()
-    day = now.strftime("%d/%m/%Y")
-    hour = now.strftime("%H:%M:%S")
-    measurement_adc_3.append({"owner":item.owner, "sensor":item.sensor, "datetime":day+' '+hour, "value": int(item.value_measured_mem)})
-    return item
+    return {"datetime":measurement_adc[-1]["datetime"], "value":measurement_adc[-1]["value"]}
 
-@app.get("/post_data_test/{owner}/{sensor}/{value}")
+@app.get("/last_acel")
+async def root():
+    now = datetime.now()
+    return {"datetime":measurement_acel[-1]["datetime"],
+            "valueX":measurement_acel[-1]["valueX"], 
+            "valueY":measurement_acel[-1]["valueY"], 
+            "valueZ":measurement_acel[-1]["valueZ"]}
+
+@app.get("/init_adc")
+async def root():
+    temp_time = [k["datetime"] for k in measurement_adc]
+    temp_y = [k["value"] for k in measurement_adc]
+    return {"datetime":temp_time, "value":temp_y}
+
+@app.get("/init_acel")
+async def root():
+    temp_time = [k["datetime"] for k in measurement_acel]
+    temp_x = [k["valueX"] for k in measurement_acel]
+    temp_y = [k["valueY"] for k in measurement_acel]
+    temp_z = [k["valueZ"] for k in measurement_acel]
+    return {"datetime":temp_time, "valueX":temp_x, "valueY":temp_y, "valueZ":temp_z}
+
+
+@app.get("/post_data_ADC/{owner}/{value}")
 async def post_data(owner: str, sensor: str, value: str):
     now = datetime.now()
-    day = now.strftime("%d/%m/%Y")
-    hour = now.strftime("%H:%M:%S")
-    dict_temp = {"owner":owner, "sensor":sensor, "datetime":day+' '+hour, "value": int(value)}
-    measurement_adc_3.append(dict_temp)
+    dict_temp = {"owner":owner, "datetime":now, "value": int(value)}
+    measurement_adc.append(dict_temp)
+    if(len(measurement_adc) > 40):
+        measurement_adc.pop(0)
+    return dict_temp
+
+@app.get("/post_data_ACEL/{owner}/{valueX}/{valueY}/{valueZ}")
+async def post_data(owner: str, valueX: str, valueY: str, valueZ: str):
+    now = datetime.now()
+    dict_temp = {"owner":owner, "datetime":str(now), "valueX": int(valueX), "valueY": int(valueY), "valueZ": int(valueZ)}
+    measurement_acel.append(dict_temp)
+    if(len(measurement_acel) > 40):
+        measurement_acel.pop(0)
     return dict_temp
