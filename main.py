@@ -4,7 +4,6 @@ from datetime import datetime
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
 import random
-import numpy as np
 
 from fastapi.middleware.cors import CORSMiddleware
     
@@ -36,6 +35,7 @@ measurement_acel = [{"owner":"Johan", "datetime":"14/07/2021 11:15:10", "valueX"
                   {"owner":"Johan", "datetime":"14/07/2021 11:24:11", "valueX": 40, "valueY": 100, "valueZ": 150},
                   {"owner":"Johan", "datetime":"14/07/2021 11:25:10", "valueX": 100, "valueY": 120, "valueZ": 145}
                   ]
+
 
 class Item(BaseModel):
     owner: str
