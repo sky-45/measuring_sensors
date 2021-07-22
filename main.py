@@ -106,7 +106,7 @@ async def root():
 
 
 @app.get("/post_data_ADC/{owner}/{value}")
-async def post_data(owner: str, sensor: str, value: str):
+async def post_data(owner: str, value: str):
     now = datetime.now()
     dict_temp = {"owner":owner, "datetime":now, "value": int(value)}
     measurement_adc.append(dict_temp)
