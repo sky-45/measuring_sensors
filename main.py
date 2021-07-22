@@ -62,11 +62,6 @@ async def root():
     #return df.to_dict("index")
     return measurement_adc
 
-@app.get("/test_react")
-async def root():
-    #return df.to_dict("index")
-    return measurement_adc
-
 @app.get("/rand_continue_adc")
 async def root():
     now = datetime.now()
@@ -90,35 +85,16 @@ async def root():
             "valueY":measurement_acel[-1]["valueY"], 
             "valueZ":measurement_acel[-1]["valueZ"]}
 
-@app.get("/init_adc")
-async def root():
-    temp_time = [k["datetime"] for k in measurement_adc]
-    temp_y = [k["value"] for k in measurement_adc]
-    return {"datetime":temp_time, "value":temp_y}
 
-@app.get("/init_acel")
-async def root():
-    temp_time = [k["datetime"] for k in measurement_acel]
-    temp_x = [k["valueX"] for k in measurement_acel]
-    temp_y = [k["valueY"] for k in measurement_acel]
-    temp_z = [k["valueZ"] for k in measurement_acel]
-    return {"datetime":temp_time, "valueX":temp_x, "valueY":temp_y, "valueZ":temp_z}
-
-
-@app.get("/post_data_ADC/{owner}/{value}")
-async def post_data(owner: str, value: str):
+@app.get("/post_data_uC/{owner}/{valueADC}/{valueX}/{valueY}/{valueZ}")
+async def post_data(owner: str, valueADC:str, valueX: str, valueY: str, valueZ: str):
     now = datetime.now()
-    dict_temp = {"owner":owner, "datetime":now, "value": int(value)}
-    measurement_adc.append(dict_temp)
-    if(len(measurement_adc) > 40):
-        measurement_adc.pop(0)
-    return dict_temp
-
-@app.get("/post_data_ACEL/{owner}/{valueX}/{valueY}/{valueZ}")
-async def post_data(owner: str, valueX: str, valueY: str, valueZ: str):
-    now = datetime.now()
-    dict_temp = {"owner":owner, "datetime":str(now), "valueX": int(valueX), "valueY": int(valueY), "valueZ": int(valueZ)}
-    measurement_acel.append(dict_temp)
+    dict_temp_adc = {"owner":owner, "datetime":str(now), "value": int(valueADC)}
+    dict_temp_acel = {"owner":owner, "datetime":str(now), "valueX": int(valueADC), "valueY": int(valueX), "valueZ": int(valueY)}
+    measurement_acel.append(dict_temp_acel)
+    measurement_adc.append(dict_temp_adc)
     if(len(measurement_acel) > 40):
         measurement_acel.pop(0)
-    return dict_temp
+    if(len(measurement_adc) > 40):
+        measurement_adc.pop(0)
+    return {"uwu"}
