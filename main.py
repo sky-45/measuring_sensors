@@ -90,7 +90,7 @@ async def root():
 async def post_data(owner: str, valueADC:str, valueX: str, valueY: str, valueZ: str):
     now = datetime.now()
     dict_temp_adc = {"owner":owner, "datetime":str(now), "value": int(valueADC)}
-    dict_temp_acel = {"owner":owner, "datetime":str(now), "valueX": int(valueADC), "valueY": int(valueX), "valueZ": int(valueY)}
+    dict_temp_acel = {"owner":owner, "datetime":str(now), "valueX": int(valueX), "valueY": int(valueY), "valueZ": int(valueZ)}
     measurement_acel.append(dict_temp_acel)
     measurement_adc.append(dict_temp_adc)
     if(len(measurement_acel) > 40):
